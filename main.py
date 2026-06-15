@@ -114,6 +114,7 @@ def actualizar_pais(paises):
     if encontrado == False:
         print("No se encontró un país con ese nombre.")
 
+
 def buscar_pais_por_nombre(paises):
     print("\nBuscar país por nombre")
 
@@ -129,6 +130,7 @@ def buscar_pais_por_nombre(paises):
     else:
         print("\nResultados encontrados:")
         mostrar_paises(encontrados)
+
 
 def filtrar_por_continente(paises):
     print("\nFiltrar países por continente")
@@ -213,6 +215,7 @@ def filtrar_paises(paises):
         else:
             print("Opción inválida. Ingrese una opción del 1 al 4.")
 
+
 def copiar_lista_paises(paises):
     copia = []
 
@@ -292,6 +295,48 @@ def ordenar_paises(paises):
         else:
             print("Opción inválida. Ingrese una opción del 1 al 4.")
 
+
+def mostrar_estadisticas(paises):
+    if len(paises) == 0:
+        print("No hay países cargados para calcular estadísticas.")
+    else:
+        pais_mayor_poblacion = paises[0]
+        pais_menor_poblacion = paises[0]
+        suma_poblacion = 0
+        suma_superficie = 0
+        continentes = {}
+
+        for pais in paises:
+            if pais["poblacion"] > pais_mayor_poblacion["poblacion"]:
+                pais_mayor_poblacion = pais
+
+            if pais["poblacion"] < pais_menor_poblacion["poblacion"]:
+                pais_menor_poblacion = pais
+
+            suma_poblacion = suma_poblacion + pais["poblacion"]
+            suma_superficie = suma_superficie + pais["superficie"]
+
+            continente = pais["continente"]
+
+            if continente in continentes:
+                continentes[continente] = continentes[continente] + 1
+            else:
+                continentes[continente] = 1
+
+        promedio_poblacion = suma_poblacion / len(paises)
+        promedio_superficie = suma_superficie / len(paises)
+
+        print("\n--- Estadísticas del dataset ---")
+        print(f"País con mayor población: {pais_mayor_poblacion['nombre']} ({pais_mayor_poblacion['poblacion']})")
+        print(f"País con menor población: {pais_menor_poblacion['nombre']} ({pais_menor_poblacion['poblacion']})")
+        print(f"Promedio de población: {promedio_poblacion:.2f}")
+        print(f"Promedio de superficie: {promedio_superficie:.2f} km²")
+
+        print("\nCantidad de países por continente:")
+        for continente in continentes:
+            print(f"{continente}: {continentes[continente]}")
+
+
 def mostrar_menu():
     print("\n--- Sistema de Gestión de Países ---")
     print("1. Mostrar países")
@@ -331,7 +376,7 @@ def ejecutar_programa():
             ordenar_paises(paises)
 
         elif opcion == "7":
-            print("Funcionalidad pendiente: mostrar estadísticas.")
+            mostrar_estadisticas(paises)
 
         elif opcion == "8":
             print("Saliendo del sistema...")
