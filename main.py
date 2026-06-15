@@ -1,13 +1,16 @@
 import csv
 
 
+# Lee los países desde el archivo CSV y los guarda en una lista de diccionarios.
 def leer_paises(nombre_archivo):
     paises = []
 
     try:
+        # Se abre el archivo en modo lectura usando UTF-8 para admitir tildes y caracteres especiales.
         with open(nombre_archivo, "r", encoding="utf-8") as archivo:
             lector = csv.DictReader(archivo)
 
+            # Cada fila del CSV se transforma en un diccionario.
             for fila in lector:
                 pais = {
                     "nombre": fila["nombre"],
@@ -27,8 +30,10 @@ def leer_paises(nombre_archivo):
     return paises
 
 
+# Guarda la lista de países en el archivo CSV, manteniendo los encabezados.
 def guardar_paises(nombre_archivo, paises):
     try:
+        # newline="" evita líneas en blanco extra al escribir archivos CSV.
         with open(nombre_archivo, "w", newline="", encoding="utf-8") as archivo:
             campos = ["nombre", "poblacion", "superficie", "continente"]
             escritor = csv.DictWriter(archivo, fieldnames=campos)
@@ -40,6 +45,7 @@ def guardar_paises(nombre_archivo, paises):
         print("Error: no se pudo guardar el archivo. Verifique que no esté abierto.")
 
 
+# Muestra por pantalla todos los países recibidos como parámetro.
 def mostrar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados.")
@@ -49,6 +55,7 @@ def mostrar_paises(paises):
             print(f"Nombre: {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} km² | Continente: {pais['continente']}")
 
 
+# Solicita un texto y valida que no esté vacío.
 def pedir_texto_no_vacio(mensaje):
     dato = input(mensaje)
 
@@ -58,6 +65,7 @@ def pedir_texto_no_vacio(mensaje):
     return dato.strip()
 
 
+# Solicita un número entero positivo y valida que el dato ingresado sea correcto.
 def pedir_entero_positivo(mensaje):
     numero = input(mensaje)
 
@@ -67,6 +75,7 @@ def pedir_entero_positivo(mensaje):
     return int(numero)
 
 
+# Permite agregar un nuevo país a la lista y luego guarda los cambios en el CSV.
 def agregar_pais(paises):
     print("\nAgregar nuevo país")
 
@@ -88,6 +97,7 @@ def agregar_pais(paises):
     print("País agregado correctamente.")
 
 
+# Busca un país por nombre exacto y permite actualizar su población y superficie.
 def actualizar_pais(paises):
     print("\nActualizar datos de un país")
 
@@ -115,6 +125,7 @@ def actualizar_pais(paises):
         print("No se encontró un país con ese nombre.")
 
 
+# Busca países por coincidencia exacta o parcial dentro del nombre.
 def buscar_pais_por_nombre(paises):
     print("\nBuscar país por nombre")
 
@@ -132,6 +143,7 @@ def buscar_pais_por_nombre(paises):
         mostrar_paises(encontrados)
 
 
+# Filtra países cuyo continente coincida exactamente con el ingresado.
 def filtrar_por_continente(paises):
     print("\nFiltrar países por continente")
 
@@ -148,6 +160,7 @@ def filtrar_por_continente(paises):
         mostrar_paises(encontrados)
 
 
+# Filtra países que tengan una población dentro del rango indicado.
 def filtrar_por_rango_poblacion(paises):
     print("\nFiltrar países por rango de población")
 
@@ -168,6 +181,7 @@ def filtrar_por_rango_poblacion(paises):
             mostrar_paises(encontrados)
 
 
+# Filtra países que tengan una superficie dentro del rango indicado.
 def filtrar_por_rango_superficie(paises):
     print("\nFiltrar países por rango de superficie")
 
@@ -188,6 +202,7 @@ def filtrar_por_rango_superficie(paises):
             mostrar_paises(encontrados)
 
 
+# Muestra un submenú para elegir el tipo de filtro.
 def filtrar_paises(paises):
     opcion = ""
 
@@ -216,6 +231,7 @@ def filtrar_paises(paises):
             print("Opción inválida. Ingrese una opción del 1 al 4.")
 
 
+# Crea una copia de la lista de países para ordenar sin modificar la lista original.
 def copiar_lista_paises(paises):
     copia = []
 
@@ -225,6 +241,7 @@ def copiar_lista_paises(paises):
     return copia
 
 
+# Ordena la lista de países usando Bubble Sort mejorado.
 def ordenar_lista_paises(paises, campo, descendente):
     paises_ordenados = copiar_lista_paises(paises)
     n = len(paises_ordenados)
@@ -246,12 +263,14 @@ def ordenar_lista_paises(paises, campo, descendente):
                     paises_ordenados[j + 1] = auxiliar
                     hubo_intercambio = True
 
+        # Si no hubo intercambios, la lista ya está ordenada.
         if hubo_intercambio == False:
             break
 
     return paises_ordenados
 
 
+# Muestra un submenú para ordenar por nombre, población o superficie.
 def ordenar_paises(paises):
     opcion = ""
 
@@ -296,6 +315,7 @@ def ordenar_paises(paises):
             print("Opción inválida. Ingrese una opción del 1 al 4.")
 
 
+# Calcula y muestra estadísticas generales del dataset de países.
 def mostrar_estadisticas(paises):
     if len(paises) == 0:
         print("No hay países cargados para calcular estadísticas.")
@@ -316,6 +336,7 @@ def mostrar_estadisticas(paises):
             suma_poblacion = suma_poblacion + pais["poblacion"]
             suma_superficie = suma_superficie + pais["superficie"]
 
+            # Se cuenta cuántos países hay por cada continente.
             continente = pais["continente"]
 
             if continente in continentes:
@@ -337,6 +358,7 @@ def mostrar_estadisticas(paises):
             print(f"{continente}: {continentes[continente]}")
 
 
+# Muestra el menú principal del sistema.
 def mostrar_menu():
     print("\n--- Sistema de Gestión de Países ---")
     print("1. Mostrar países")
@@ -349,6 +371,7 @@ def mostrar_menu():
     print("8. Salir")
 
 
+# Función principal del programa. Controla el menú y llama a las funciones correspondientes.
 def ejecutar_programa():
     paises = leer_paises("paises.csv")
     opcion = ""
@@ -385,4 +408,5 @@ def ejecutar_programa():
             print("Opción inválida. Ingrese una opción del 1 al 8.")
 
 
+# Llamada inicial para ejecutar el programa.
 ejecutar_programa()
