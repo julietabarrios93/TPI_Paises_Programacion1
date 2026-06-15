@@ -213,6 +213,84 @@ def filtrar_paises(paises):
         else:
             print("Opción inválida. Ingrese una opción del 1 al 4.")
 
+def copiar_lista_paises(paises):
+    copia = []
+
+    for pais in paises:
+        copia.append(pais)
+
+    return copia
+
+
+def ordenar_lista_paises(paises, campo, descendente):
+    paises_ordenados = copiar_lista_paises(paises)
+    n = len(paises_ordenados)
+
+    for i in range(n - 1):
+        hubo_intercambio = False
+
+        for j in range(0, n - 1 - i):
+            if descendente == False:
+                if paises_ordenados[j][campo] > paises_ordenados[j + 1][campo]:
+                    auxiliar = paises_ordenados[j]
+                    paises_ordenados[j] = paises_ordenados[j + 1]
+                    paises_ordenados[j + 1] = auxiliar
+                    hubo_intercambio = True
+            else:
+                if paises_ordenados[j][campo] < paises_ordenados[j + 1][campo]:
+                    auxiliar = paises_ordenados[j]
+                    paises_ordenados[j] = paises_ordenados[j + 1]
+                    paises_ordenados[j + 1] = auxiliar
+                    hubo_intercambio = True
+
+        if hubo_intercambio == False:
+            break
+
+    return paises_ordenados
+
+
+def ordenar_paises(paises):
+    opcion = ""
+
+    while opcion != "4":
+        print("\n--- Ordenar países ---")
+        print("1. Ordenar por nombre")
+        print("2. Ordenar por población")
+        print("3. Ordenar por superficie")
+        print("4. Volver al menú principal")
+
+        opcion = input("Ingrese una opción: ")
+
+        if opcion == "1" or opcion == "2" or opcion == "3":
+            print("\nTipo de orden:")
+            print("1. Ascendente")
+            print("2. Descendente")
+
+            tipo_orden = input("Ingrese una opción: ")
+
+            if opcion == "1":
+                campo = "nombre"
+            elif opcion == "2":
+                campo = "poblacion"
+            else:
+                campo = "superficie"
+
+            if tipo_orden == "1":
+                paises_ordenados = ordenar_lista_paises(paises, campo, False)
+                mostrar_paises(paises_ordenados)
+
+            elif tipo_orden == "2":
+                paises_ordenados = ordenar_lista_paises(paises, campo, True)
+                mostrar_paises(paises_ordenados)
+
+            else:
+                print("Opción inválida. Ingrese 1 o 2.")
+
+        elif opcion == "4":
+            print("Volviendo al menú principal...")
+
+        else:
+            print("Opción inválida. Ingrese una opción del 1 al 4.")
 
 def mostrar_menu():
     print("\n--- Sistema de Gestión de Países ---")
@@ -248,9 +326,9 @@ def ejecutar_programa():
 
         elif opcion == "5":
             filtrar_paises(paises)
-            
+
         elif opcion == "6":
-            print("Funcionalidad pendiente: ordenar países.")
+            ordenar_paises(paises)
 
         elif opcion == "7":
             print("Funcionalidad pendiente: mostrar estadísticas.")
