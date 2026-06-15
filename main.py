@@ -27,6 +27,19 @@ def leer_paises(nombre_archivo):
     return paises
 
 
+def guardar_paises(nombre_archivo, paises):
+    try:
+        with open(nombre_archivo, "w", newline="", encoding="utf-8") as archivo:
+            campos = ["nombre", "poblacion", "superficie", "continente"]
+            escritor = csv.DictWriter(archivo, fieldnames=campos)
+
+            escritor.writeheader()
+            escritor.writerows(paises)
+
+    except PermissionError:
+        print("Error: no se pudo guardar el archivo. Verifique que no esté abierto.")
+
+
 def mostrar_paises(paises):
     if len(paises) == 0:
         print("No hay países cargados.")
@@ -34,6 +47,45 @@ def mostrar_paises(paises):
         print("\nListado de países:")
         for pais in paises:
             print(f"Nombre: {pais['nombre']} | Población: {pais['poblacion']} | Superficie: {pais['superficie']} km² | Continente: {pais['continente']}")
+
+
+def pedir_texto_no_vacio(mensaje):
+    dato = input(mensaje)
+
+    while dato.strip() == "":
+        dato = input("El campo no puede estar vacío. Ingrese nuevamente: ")
+
+    return dato.strip()
+
+
+def pedir_entero_positivo(mensaje):
+    numero = input(mensaje)
+
+    while not numero.isdigit() or int(numero) <= 0:
+        numero = input("Debe ingresar un número entero positivo: ")
+
+    return int(numero)
+
+
+def agregar_pais(paises):
+    print("\nAgregar nuevo país")
+
+    nombre = pedir_texto_no_vacio("Ingrese el nombre del país: ")
+    poblacion = pedir_entero_positivo("Ingrese la población: ")
+    superficie = pedir_entero_positivo("Ingrese la superficie en km²: ")
+    continente = pedir_texto_no_vacio("Ingrese el continente: ")
+
+    pais = {
+        "nombre": nombre,
+        "poblacion": poblacion,
+        "superficie": superficie,
+        "continente": continente
+    }
+
+    paises.append(pais)
+    guardar_paises("paises.csv", paises)
+
+    print("País agregado correctamente.")
 
 
 def mostrar_menu():
@@ -60,7 +112,7 @@ def ejecutar_programa():
             mostrar_paises(paises)
 
         elif opcion == "2":
-            print("Funcionalidad pendiente: agregar país.")
+            agregar_pais(paises)
 
         elif opcion == "3":
             print("Funcionalidad pendiente: actualizar país.")
