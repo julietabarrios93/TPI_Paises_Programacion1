@@ -114,6 +114,21 @@ def actualizar_pais(paises):
     if encontrado == False:
         print("No se encontró un país con ese nombre.")
 
+def buscar_pais_por_nombre(paises):
+    print("\nBuscar país por nombre")
+
+    nombre_buscado = pedir_texto_no_vacio("Ingrese el nombre o parte del nombre del país: ")
+    encontrados = []
+
+    for pais in paises:
+        if nombre_buscado in pais["nombre"]:
+            encontrados.append(pais)
+
+    if len(encontrados) == 0:
+        print("No se encontraron países con ese nombre.")
+    else:
+        print("\nResultados encontrados:")
+        mostrar_paises(encontrados)
 
 def mostrar_menu():
     print("\n--- Sistema de Gestión de Países ---")
@@ -145,7 +160,7 @@ def ejecutar_programa():
             actualizar_pais(paises)
 
         elif opcion == "4":
-            print("Funcionalidad pendiente: buscar país.")
+            buscar_pais_por_nombre(paises)
 
         elif opcion == "5":
             print("Funcionalidad pendiente: filtrar países.")
